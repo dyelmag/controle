@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -25,9 +27,13 @@ export class LoginComponent implements OnInit {
 
   entrar() {
     this.submitted = true;
-
     if (this.login.valid) {
-      this.erro = true;
+      const res = this.authService.login(this.login.value.email, this.login.value.senha);
+      if (!res) {
+        this.erro = true;
+      } else {
+        this.erro = false;
+      }
     }
   }
 
